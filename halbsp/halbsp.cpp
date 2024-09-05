@@ -1,9 +1,3 @@
-// halbsp.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
-//"C:\Program Files (x86)\Steam\steamapps\sourcemods\maplabstemplate" "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Singleplayer" "C:\Users\Peter\Documents\assetexporttesting" "C:\Program Files (x86)\Steam\steamapps\sourcemods\maplabstemplate\maps/tt19_hal9000_1.bsp"
-//"C:\Program Files (x86)\Steam\steamapps\sourcemods\eyecandy" "C:\Program Files (x86)\Steam\steamapps\common\Source SDK Base 2013 Singleplayer" "C:\Users\Peter\Documents\assetexporttesting" "C:\Program Files (x86)\Steam\steamapps\sourcemods\eyecandy\maps/tt08_monastery.bsp"
-
 #include "halbsp.h"
 
 char* memblock;
@@ -101,33 +95,34 @@ void copyVmt(path vmtPath, path destinationFolder, path vmtBasePath) {
 
     for (int i = 0; i < kv.At(0).ChildCount(); i++) {
         if (kv.At(0).At(i).IsValid()) {
+            char* kvString = kv.At(0).At(i).Key().string;
             if (
-                strcmp(kv.At(0).At(i).Key().string, "$basetexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$basetexture2") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$blendmodulatetexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$bumpmap") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$bumpmap2") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$bumpmask") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$lightwarptexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$ambientoccltexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$envmapmask") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$detail") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$detail1") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$detail2") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$selfillummask") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$selfillumtexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$emissiveblendtexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$emissiveblendflowtexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$normalmap") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$reflecttexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$refracttexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$flowmap") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$phongexponenttexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$phongwarptexture") == 0 ||
-                strcmp(kv.At(0).At(i).Key().string, "$flow_noise_texture") == 0 
+                strcmp(kvString, "$basetexture") == 0 ||
+                strcmp(kvString, "$basetexture2") == 0 ||
+                strcmp(kvString, "$blendmodulatetexture") == 0 ||
+                strcmp(kvString, "$bumpmap") == 0 ||
+                strcmp(kvString, "$bumpmap2") == 0 ||
+                strcmp(kvString, "$bumpmask") == 0 ||
+                strcmp(kvString, "$lightwarptexture") == 0 ||
+                strcmp(kvString, "$ambientoccltexture") == 0 ||
+                strcmp(kvString, "$envmapmask") == 0 ||
+                strcmp(kvString, "$detail") == 0 ||
+                strcmp(kvString, "$detail1") == 0 ||
+                strcmp(kvString, "$detail2") == 0 ||
+                strcmp(kvString, "$selfillummask") == 0 ||
+                strcmp(kvString, "$selfillumtexture") == 0 ||
+                strcmp(kvString, "$emissiveblendtexture") == 0 ||
+                strcmp(kvString, "$emissiveblendflowtexture") == 0 ||
+                strcmp(kvString, "$normalmap") == 0 ||
+                strcmp(kvString, "$reflecttexture") == 0 ||
+                strcmp(kvString, "$refracttexture") == 0 ||
+                strcmp(kvString, "$flowmap") == 0 ||
+                strcmp(kvString, "$phongexponenttexture") == 0 ||
+                strcmp(kvString, "$phongwarptexture") == 0 ||
+                strcmp(kvString, "$flow_noise_texture") == 0 
                 ) {
 
-                cout << "Texture: " << kv.At(0).At(i).Value().string << endl;
+                cout << "Texture: " << kvString << endl;
 
                 //string filePath = "materials/" + (kv.At(0).At(i).Value().string) + ".vtf";
                 string filePath = kv.At(0).At(i).Value().string;
