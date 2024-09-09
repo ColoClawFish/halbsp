@@ -318,10 +318,11 @@ void SearchSoundscriptForSound(string bspFilename, string destinationPath, strin
         if (soundscriptKV.IsValid()) {
             cout << "Soundscript file valid." << endl;
             KeyValue soundentry = soundscriptKV.Get(message.c_str());
-            if (soundentry.IsValid() && soundentry.HasChildren()) {
+            if (soundentry.IsValid()) {
                 cout << "Soundentry " << message << " valid, apparently." << endl;
                 KeyValue wavesoundentry = soundentry.Get("wave");
                 if (wavesoundentry.IsValid()) {
+                    cout << "Wave value: " << wavesoundentry.ToString() << endl;
                     FindAndCopySound(wavesoundentry.Value().string, destinationPath);
                 }
                 else {
