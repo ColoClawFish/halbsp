@@ -318,15 +318,16 @@ void SearchSoundscriptForSound(string bspFilename, string destinationPath, strin
         if (soundscriptKV.IsValid()) {
             cout << "Soundscript file valid." << endl;
             KeyValue soundentry = soundscriptKV.Get(message.c_str());
-            if (soundentry.IsValid()) {
-                cout << "Soundentry " << message << " valid, apparently." << endl;
+            if (soundentry.IsValid() && soundentry.ChildCount() > 0) {
+                cout << "Soundentry " << message << " valid!" << endl;
                 KeyValue wavesoundentry = soundentry.Get("wave");
                 if (wavesoundentry.IsValid()) {
-                    cout << "Wave value: " << wavesoundentry.ToString() << endl;
+                    cout << "Wave value: " << wavesoundentry.Value().string << endl;
                     FindAndCopySound(wavesoundentry.Value().string, destinationPath);
                 }
                 else {
                     wavesoundentry = soundentry.Get("rndwave");
+                    cout << "RndWave parsing" << endl;
                     if (wavesoundentry.IsValid()) {
                         for (int j = 0; j < wavesoundentry.ChildCount(); j++) {
                             FindAndCopySound(wavesoundentry.At(j).Value().string, destinationPath);
@@ -351,28 +352,33 @@ void SearchSoundscapesForSoundscape(string bspFilename, string destinationPath, 
     path soundscriptPath(bspFilename);
     soundscriptPath.replace_filename(path(soundscriptPath.filename().replace_extension("")).string() + "_soundscapes.txt");
     cout << "Soundscape to search: " << soundscriptPath << endl;
+    cout << "Searching for " << message << endl;
     if (exists(soundscriptPath)) {
         KeyValueRoot soundscriptKV;
         fileToKeyValues(soundscriptPath.string(), soundscriptKV);
         copyFile(soundscriptPath, path(destinationPath + "/maps"));
         if (soundscriptKV.IsValid()) {
             cout << "Soundscape file valid." << endl;
+            //cout << soundscriptKV.ToString() << endl; PASSED
             KeyValue soundentry = soundscriptKV.Get(message.c_str());
-            if (soundentry.IsValid()) {
-                /*
-                KeyValue wavesoundentry = soundentry.Get("wave");
-                if (wavesoundentry.IsValid()) {
-                    FindAndCopySound(wavesoundentry.Value().string, destinationPath);
-                }
-                else {
-                    wavesoundentry = soundentry.Get("rndwave");
-                    if (wavesoundentry.IsValid()) {
-                        for (int j = 0; j < wavesoundentry.ChildCount(); j++) {
-                            FindAndCopySound(wavesoundentry.At(j).Value().string, destinationPath);
+            cout << soundentry.ChildCount() << endl;
+            if (soundentry.IsValid() && soundentry.ChildCount() > 0) {
+                for (int sound_i = 0; sound_i < soundentry.ChildCount(); sound_i++) {
+                    //cout << soundentry.At(sound_i).Key().string << endl;
+                    if (strcmp(soundentry.At(sound_i).Key().string, "playlooping") == 0) {
+                        KeyValue playLooping = soundentry.At(sound_i).Get("wave");
+                        FindAndCopySound(playLooping.Value().string, destinationPath);
+                    }
+                    else if (strcmp(soundentry.At(sound_i).Key().string, "playrandom") == 0) {
+                        KeyValue playrandom = soundentry.At(sound_i).Get("rndwave");
+                        if (playrandom.IsValid()) {
+                            for (int j = 0; j < playrandom.ChildCount(); j++) {
+                                FindAndCopySound(playrandom.At(j).Value().string, destinationPath);
+                            }
                         }
                     }
                 }
-                */
+                /*
                 KeyValue playLooping = soundentry.Get("playlooping");
                 if (playLooping.IsValid()) {
                     playLooping = soundentry.Get("wave");
@@ -389,17 +395,18 @@ void SearchSoundscapesForSoundscape(string bspFilename, string destinationPath, 
                         }
                     }
                 }
+                */
             }
             else {
-                cout << "Soundscape " << message << " not found!" << endl;
+                cout << "Soundscape " << message << " not found!" << endl << endl;
             }
         }
         else {
-            cout << "Soundscape file invalid!" << endl;
+            cout << "Soundscape file invalid!" << endl << endl;
         }
     }
     else {
-        cout << "No map-specific soundscapes found." << endl;
+        cout << "No map-specific soundscapes found." << endl << endl;
     }
 }
 
